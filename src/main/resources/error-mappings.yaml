@@ -1,0 +1,11 @@
+errorMappings:
+
+  - key: "SERVER_ERROR"
+    httpStatus: 500
+    code: "payment.1001"
+    message: "Server Error"
+
+  - key: "REQUEST_MALFORMED"
+    httpStatus: 400
+    code: "payment.1002"
+    message: "Malformed Request"
