@@ -35,7 +35,6 @@ public class ResponseResolver {
             inputStream = new ClassPathResource(ERROR_MAPPINGS_YAML).getInputStream();
         } catch (IOException e) {
             log.warn("Unable to find {} ", ERROR_MAPPINGS_YAML);
-            // TODO : Handle RTE in ExceptionHandler
             throw new RuntimeException("Unable to find error mapping", e);
         }
 
@@ -59,7 +58,6 @@ public class ResponseResolver {
         ErrorDto errorDto = exception.getError();
 
         if (errorDto == null) {
-            // TODO : Handle exception in Handler
             throw new IllegalArgumentException("Can not process empty exception");
         }
 

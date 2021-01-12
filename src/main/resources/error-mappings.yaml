@@ -5,6 +5,11 @@ errorMappings:
     code: "payment.1001"
     message: "Server Error"
 
+  - key: "GENERAL_INPUT_ERROR"
+    httpStatus: 400
+    code: "payment.1002"
+    message: "Malformed Request"
+
   - key: "REQUEST_MALFORMED"
     httpStatus: 400
     code: "payment.1002"

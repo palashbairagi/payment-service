@@ -20,8 +20,24 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
+	// Data Persistence
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.postgresql:postgresql'
+	
+	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// MapStruct
+	compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: '1.2.0.Final'
+	compileOnly 'org.mapstruct:mapstruct-processor:1.2.0.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.2.0.Final'
+
+	// Validation
+	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.1'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

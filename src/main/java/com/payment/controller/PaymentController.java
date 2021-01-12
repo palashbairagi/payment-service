@@ -1,24 +1,39 @@
 package com.payment.controller;
 
-import com.payment.enums.ErrorCode;
-import com.payment.exception.PaymentException;
 import com.payment.model.common.ResponseDto;
+import com.payment.model.dto.PaymentDto;
+import com.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping(value = "/payment", consumes = "application/json")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PaymentController {
 
-    @GetMapping
-    public ResponseDto getPaymentInfo() {
+    private final PaymentService paymentService;
 
-        throw new PaymentException(ErrorCode.REQUEST_MALFORMED);
+    // TODO: Validation
 
+    @PostMapping
+    public ResponseEntity<ResponseDto<PaymentDto>> addPayment(@RequestBody PaymentDto payment) {
+        return new ResponseEntity<>(ResponseDto.forSuccess(paymentService.addPayment(payment)), HttpStatus.OK);
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<ResponseDto<PaymentDto>> getPayment(@PathVariable("orderId") Long orderId) {
+        return new ResponseEntity<>(ResponseDto.forSuccess(paymentService.getPayment(orderId)), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{orderId}")
+    public ResponseEntity<ResponseDto<Void>> processRefund(@PathVariable("orderId") Long orderId) {
+        return new ResponseEntity<>(ResponseDto.forSuccess(paymentService.processRefund(orderId)), HttpStatus.OK);
     }
 
 }
