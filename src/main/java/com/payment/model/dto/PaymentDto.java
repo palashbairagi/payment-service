@@ -18,10 +18,10 @@ public class PaymentDto extends Dto {
 
     private String status;
 
-    private BillingAddressDto billingAddress;
+    private BillingAddress billingAddress;
 
     @Data
-    public static class BillingAddressDto extends Dto {
+    public static class BillingAddress extends Dto {
 
         private Long addressId;
 

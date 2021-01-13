@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/db_payment
+    url: jdbc:postgresql://host.docker.internal:5432/db_payment
     username: usr_payment
     password: pass_payment
   jpa:

@@ -8,7 +8,6 @@ import com.payment.model.common.BaseModel;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -34,4 +33,8 @@ public class Payment extends BaseModel {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private PaymentStatus status = PaymentStatus.CONFIRMED;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private BillingAddress billingAddress;
 }

@@ -7,19 +7,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @RestController
-@RequestMapping(value = "/payment", consumes = "application/json")
+@RequestMapping(value = "/v1/payment", consumes = "application/json")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PaymentController {
 
     private final PaymentService paymentService;
 
-    // TODO: Validation
+    // TODO: Validation and add price column
 
     @PostMapping
     public ResponseEntity<ResponseDto<PaymentDto>> addPayment(@RequestBody PaymentDto payment) {

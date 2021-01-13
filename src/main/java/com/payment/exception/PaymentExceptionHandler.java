@@ -11,10 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.validation.ConstraintViolationException;
-
-import static com.payment.enums.ErrorCode.REQUEST_MALFORMED;
-
 @ControllerAdvice
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))

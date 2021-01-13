@@ -7,7 +7,6 @@ import com.payment.mapper.PaymentMapper;
 import com.payment.model.dto.PaymentDto;
 import com.payment.model.entity.Payment;
 import com.payment.repository.PaymentRepository;
-import com.payment.service.BillingAddressService;
 import com.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentMapper paymentMapper;
     private final PaymentRepository paymentRepository;
-    private final BillingAddressService billingAddressService;
 
     @Override
     @Transactional
@@ -34,14 +32,9 @@ public class PaymentServiceImpl implements PaymentService {
             throw new PaymentException(ErrorCode.GENERAL_INPUT_ERROR);
         }
 
-        PaymentDto.BillingAddressDto billingAddressDto =
-                billingAddressService.addBillingAddress(paymentRequestDto.getBillingAddress());
         Payment payment = paymentRepository.save(paymentMapper.map(paymentRequestDto));
 
-        PaymentDto paymentResponseDto = paymentMapper.map(payment);
-        paymentResponseDto.setBillingAddress(billingAddressDto);
-
-        return paymentResponseDto;
+        return paymentMapper.map(payment);
     }
 
     @Override
