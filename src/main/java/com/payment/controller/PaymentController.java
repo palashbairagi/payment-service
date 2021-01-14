@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/v1/payment", consumes = "application/json")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -16,16 +18,16 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    // TODO: Validation and add price column
+    // TODO: Validation
 
     @PostMapping
-    public ResponseEntity<ResponseDto<PaymentDto>> addPayment(@RequestBody PaymentDto payment) {
-        return new ResponseEntity<>(ResponseDto.forSuccess(paymentService.addPayment(payment)), HttpStatus.OK);
+    public ResponseEntity<ResponseDto<List<PaymentDto>>> addPayments(@RequestBody List<PaymentDto> payment) {
+        return new ResponseEntity<>(ResponseDto.forSuccess(paymentService.addPayments(payment)), HttpStatus.OK);
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<ResponseDto<PaymentDto>> getPayment(@PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(ResponseDto.forSuccess(paymentService.getPayment(orderId)), HttpStatus.OK);
+    public ResponseEntity<ResponseDto<List<PaymentDto>>> getPayments(@PathVariable("orderId") Long orderId) {
+        return new ResponseEntity<>(ResponseDto.forSuccess(paymentService.getPayments(orderId)), HttpStatus.OK);
     }
 
     @PatchMapping("/{orderId}")

@@ -2,6 +2,7 @@ package com.payment.service.impl;
 
 import com.payment.enums.ErrorCode;
 import com.payment.enums.PaymentMethod;
+import com.payment.enums.PaymentStatus;
 import com.payment.exception.PaymentException;
 import com.payment.mapper.PaymentMapper;
 import com.payment.model.dto.PaymentDto;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -23,27 +27,47 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
 
     @Override
-    @Transactional
-    public PaymentDto addPayment(PaymentDto paymentRequestDto) {
+    public List<PaymentDto> addPayments(List<PaymentDto> paymentRequestDto) {
 
-        if(!paymentRequestDto.getPaymentMethod().equals(PaymentMethod.CREDIT_CARD.getKey()) &&
-                !paymentRequestDto.getPaymentMethod().equals(PaymentMethod.DEBIT_CARD.getKey())) {
-            log.error("Invalid Card Type");
-            throw new PaymentException(ErrorCode.GENERAL_INPUT_ERROR);
+        List<Payment> payments = paymentRequestDto.stream()
+                .map(
+                        paymentDto -> {
+
+                            if (!PaymentMethod.isValidPaymentMethod(paymentDto.getPaymentMethod())) {
+                                log.error("Invalid Card Type");
+                                throw new PaymentException(ErrorCode.GENERAL_INPUT_ERROR);
+                            }
+
+                            return paymentMapper.map(paymentDto);
+                        })
+                .collect(Collectors.toList());
+
+        List<Payment> newPayments = paymentRepository.saveAll(payments);
+
+        return newPayments.stream()
+                .map(paymentMapper::map)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PaymentDto> getPayments(Long orderId) {
+
+        return paymentRepository.findByOrderId(orderId).stream()
+                .map(paymentMapper::map)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    @Transactional
+    public Void processRefund(Long orderId) {
+
+        Integer updatedRecords = paymentRepository.updatePaymentStatus(PaymentStatus.CANCELLED, orderId);
+
+        if (updatedRecords == 0) {
+            throw new PaymentException(ErrorCode.REQUEST_MALFORMED);
         }
 
-        Payment payment = paymentRepository.save(paymentMapper.map(paymentRequestDto));
-
-        return paymentMapper.map(payment);
-    }
-
-    @Override
-    public PaymentDto getPayment(Long orderId) {
-        return null;
-    }
-
-    @Override
-    public Void processRefund(Long orderId) {
         return null;
     }
 

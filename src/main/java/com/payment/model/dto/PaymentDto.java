@@ -18,6 +18,8 @@ public class PaymentDto extends Dto {
 
     private String status;
 
+    private Double amount;
+
     private BillingAddress billingAddress;
 
     @Data

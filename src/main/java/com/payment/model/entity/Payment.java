@@ -34,6 +34,9 @@ public class Payment extends BaseModel {
     @Enumerated(EnumType.STRING)
     private PaymentStatus status = PaymentStatus.CONFIRMED;
 
+    @Column(name = "amount")
+    private Double amount;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private BillingAddress billingAddress;
